@@ -1,6 +1,6 @@
 # labsafe-bypass
 
-부경대학교 연구실 안전 교육을 빠르게 이수할 수 있는 프로그램입니다. Release 페이지에서 자신의 컴퓨터에 맞는 압축파일을 내려 받을 수 있습니다(macOS, Linux x64, Windows x86/x64).
+부경대학교 연구실 안전 교육을 빠르게 이수할 수 있는 프로그램입니다. [Releases](https://github.com/hallazzang/labsafe-bypass/releases) 페이지에서 자신의 컴퓨터에 맞는 압축파일을 내려 받을 수 있습니다(macOS, Linux x64, Windows x86/x64).
 
 ## Usage
 
