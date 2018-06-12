@@ -13,4 +13,3 @@ GZIP=-9 tar -C build -cvzf build/labsafe-linux.amd64.tar.gz labsafe-linux.amd64
 cd build
 zip -9 -FS labsafe-windows.386.zip labsafe-windows.386.exe
 zip -9 -FS labsafe-windows.amd64.zip labsafe-windows.amd64.exe
-cd /
