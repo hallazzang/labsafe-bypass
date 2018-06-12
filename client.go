@@ -20,8 +20,7 @@ import (
 const UserAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36"
 
 const (
-	Unknown = iota
-	NormalContent
+	NormalContent = iota
 	VideoContent
 )
 
@@ -87,35 +86,6 @@ func (c *Client) Login(id, pw string) (bool, error) {
 	}
 
 	return r.IsSuccess, nil
-}
-
-func (c *Client) GetTotalPages(progressNo string) (int, error) {
-	u := "https://labsafe.pknu.ac.kr/Edu/ContentsViewPop"
-	data := url.Values{
-		"scheduleMemberProgressNo": {progressNo},
-	}
-	resp, err := c.hc.Get(fmt.Sprintf("%s?%s", u, data.Encode()))
-	if err != nil {
-		return 0, errors.Wrap(err, "http get error")
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != 200 {
-		return 0, errors.Errorf("bad status code: %d", resp.StatusCode)
-	}
-
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return 0, errors.Wrap(err, "failed reading response body")
-	}
-
-	m := searchRegexp(`var totalPage = '(\d+)';`, string(body))
-	if len(m) == 0 {
-		return 0, errors.New("failed finding matching text")
-	}
-	tp, _ := strconv.Atoi(m[1])
-
-	return tp, nil
 }
 
 func (c *Client) MemberNo() (string, error) {
@@ -201,6 +171,35 @@ func (c *Client) GetProgresses() ([]Progress, error) {
 	}
 
 	return p, nil
+}
+
+func (c *Client) GetTotalPages(progressNo string) (int, error) {
+	u := "https://labsafe.pknu.ac.kr/Edu/ContentsViewPop"
+	data := url.Values{
+		"scheduleMemberProgressNo": {progressNo},
+	}
+	resp, err := c.hc.Get(fmt.Sprintf("%s?%s", u, data.Encode()))
+	if err != nil {
+		return 0, errors.Wrap(err, "http get error")
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != 200 {
+		return 0, errors.Errorf("bad status code: %d", resp.StatusCode)
+	}
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return 0, errors.Wrap(err, "failed reading response body")
+	}
+
+	m := searchRegexp(`var totalPage = '(\d+)';`, string(body))
+	if len(m) == 0 {
+		return 0, errors.New("failed finding matching text")
+	}
+	tp, _ := strconv.Atoi(m[1])
+
+	return tp, nil
 }
 
 func (c *Client) ViewNormal(progressNo string, page int, interval time.Duration) (bool, bool, error) {
