@@ -7,5 +7,10 @@ GOOS=windows GOARCH=386 go build -o build/labsafe-windows.386.exe cmd/labsafe/*.
 echo windows/amd64
 GOOS=windows GOARCH=amd64 go build -o build/labsafe-windows.amd64.exe cmd/labsafe/*.go
 
-echo zipping
-zip -9 build/build.zip build/labsafe-*
+echo compressing
+tar -C build -cvzf build/labsafe-darwin.amd64.tar.gz labsafe-darwin.amd64
+tar -C build -cvzf build/labsafe-linux.amd64.tar.gz labsafe-linux.amd64
+cd build
+zip -9 -FS labsafe-windows.386.zip labsafe-windows.386.exe
+zip -9 -FS labsafe-windows.amd64.zip labsafe-windows.amd64.exe
+cd /
