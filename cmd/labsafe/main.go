@@ -16,16 +16,16 @@ var id, pw string
 func doProgress(c *labsafe.Client, p *labsafe.Progress, interval time.Duration) error {
 	switch p.Type {
 	case labsafe.NormalContent:
-		Info("%s - started", p.Name)
-
 		pages, err := c.GetTotalPages(p.No)
 		if err != nil {
 			return errors.Wrap(err, "cannot get total pages")
 		}
 
+		Info("%s - total %d pages, started", p.Name, pages)
+
 		wg := &sync.WaitGroup{}
 		for page := 1; page <= pages; page++ {
-			time.Sleep(600 * time.Millisecond)
+			time.Sleep(400 * time.Millisecond)
 
 			cc, err := labsafe.NewClient()
 			if err != nil {
@@ -39,6 +39,7 @@ func doProgress(c *labsafe.Client, p *labsafe.Progress, interval time.Duration) 
 			go func(page int) {
 				defer wg.Done()
 
+				// Info("%s page %d - started", p.Name, page)
 				for {
 					suc, _, err := cc.ViewNormal(p.No, page, interval)
 					if err != nil {
@@ -46,6 +47,7 @@ func doProgress(c *labsafe.Client, p *labsafe.Progress, interval time.Duration) 
 					} else if !suc {
 						Error("%s page %d - failed", p.Name, page)
 					} else {
+						// Info("%s page %d - finished", p.Name, page)
 						break
 					}
 
@@ -121,7 +123,7 @@ func main() {
 
 		for _, p := range ps {
 			if !p.Taken && p.No != "" {
-				err := doProgress(c, &p, 10*time.Second)
+				err := doProgress(c, &p, 6*time.Second)
 				if err != nil {
 					Error("%s - failed: %v", err)
 				}
