@@ -125,7 +125,7 @@ func main() {
 			if !p.Taken && p.No != "" {
 				err := doProgress(c, &p, 6*time.Second)
 				if err != nil {
-					Error("%s - failed: %v", err)
+					Error("%s - failed: %v", p.Name, err)
 				}
 				done = false
 			}
