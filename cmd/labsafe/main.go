@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/fatih/color"
-	"github.com/hallazzang/labsafe"
+	"github.com/hallazzang/labsafe-bypass"
 	"github.com/pkg/errors"
 )
 
